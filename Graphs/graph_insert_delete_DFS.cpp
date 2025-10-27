@@ -28,6 +28,8 @@ public:
     void display();
     void insertEdge(int src, int dest);
     void deleteEdge(int src, int dest);
+    void DFS(int start);               
+    void DFSUtil(int v, bool visited[]);
 };
 
 // --------------------
@@ -104,10 +106,36 @@ void listgraph::display() {
 }
 
 // --------------------
+// DFS Utility (recursive)
+// --------------------
+void listgraph::DFSUtil(int v, bool visited[]) {
+    visited[v] = true;
+    cout << v + 1 << " ";  // print vertex number (1-based)
+
+    graphnode* temp = list[v];
+    while (temp != NULL) {
+        int adj = temp->vertex - 1;  // convert to 0-based index
+        if (!visited[adj])
+            DFSUtil(adj, visited);
+        temp = temp->next;
+    }
+}
+
+// --------------------
+// DFS start function
+// --------------------
+void listgraph::DFS(int start) {
+    bool visited[MAX] = {false};
+    cout << "DFS starting from vertex " << start << ":\n";
+    DFSUtil(start - 1, visited);  // convert start to 0-based
+    cout << endl;
+}
+
+// --------------------
 // main()
 // --------------------
 int main() {
-    int n, src, dest;
+    int n, src, dest,startVertex;
     cout << "Enter number of vertices: ";
     cin >> n;
 
@@ -130,6 +158,10 @@ int main() {
 
     cout << "\nGraph after deletion:\n";
     g.display();
+
+    cout << "\nEnter starting vertex for DFS: ";
+    cin >> startVertex;
+    g.DFS(startVertex);
 
     return 0;
 }
