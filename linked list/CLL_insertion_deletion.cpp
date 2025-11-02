@@ -81,6 +81,91 @@ void insertpos(int data,int pos){
     temp->next=newnode;
 }
 
+void deletebeg(){
+    if(head==NULL){
+        return;
+    }
+
+    if(head->next==head){
+        delete head;
+        head=NULL;
+        return;
+    }
+
+    node* temp=head;
+    node* last=head;
+
+    while(last->next!=head){
+        last=last->next;
+    }
+
+    head=head->next;
+    last->next=head;
+    delete temp;
+}
+
+void deleteend(){
+    if(head==NULL){
+        return;
+    }
+
+    if(head->next==head){
+        delete head;
+        head=NULL;
+        return;
+    }
+
+    node* temp=head;
+    node* prev=NULL;
+
+    while(temp->next!=head){
+        prev=temp;
+        temp=temp->next;
+    }
+
+    prev->next=head;
+    delete temp;
+}
+
+void deletepos(int pos){
+    if(head==NULL){
+        return;
+    }
+
+    if(head->next==head){
+        if(pos!=1){
+            cout << "invalid position";
+            return;
+        }
+        else{
+            delete head;
+            head=NULL;
+            return;
+        }
+    }
+
+    if(pos==1){
+        deletebeg();
+        return;
+    }
+
+    node* temp=head;
+    node* prev=NULL;
+
+    for(int i=1;i<pos && temp->next!=head;i++){
+        prev=temp;
+        temp=temp->next;
+    }
+
+    if(temp==head){
+        cout << "invalid position" ;
+        return;
+    }
+
+    prev->next=temp->next;
+    delete temp;
+}
+
 void display() {
     if (head == NULL) {
         cout << "List empty\n";
@@ -105,7 +190,10 @@ int main(){
     cout << "2. insert at end" << endl;
     cout << "3. insert at a position" << endl;
     cout << "4. display linked list" << endl;
-    cout << "5. EXIT" << endl;
+    cout << "5. delete at beginning" << endl;
+    cout << "6. delete at end" << endl;
+    cout << "7. delete at a position" << endl;
+    cout << "8. EXIT" << endl;
     cout << "enter your choice: " ;
     cin >> ch;
 
@@ -135,13 +223,27 @@ int main(){
         break;
 
         case 5:
+        deletebeg();
+        break;
+
+        case 6:
+        deleteend();
+        break;
+
+        case 7:
+        cout << "delete at which position? : " ;
+        cin >> pos;
+        deletepos(pos);
+        break;
+
+        case 8:
         cout << "exiting program..." ;
         break;
 
         default:
         cout << "invalid input" << endl;
         }
-    }while(ch!=5);
+    }while(ch!=8);
     
     return 0;  
 }
